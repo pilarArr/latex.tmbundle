@@ -241,21 +241,21 @@ end
 #
 # [filepath] The path to an image that should be included.
 def include_figure(filepath)
-  "\\\\begin{figure}[\${1|h,t,b,p|}]\n" \
+  "\\\\begin{figure}[H]\n" \
   "  \\\\centering\n" \
-  "    \\\\includegraphics[width=\${2:.9\\textwidth}]{#{filepath}}\n" \
-  "  \\\\caption{\${3:caption}}\n" \
-  "  \\\\label{fig:\${4:#{filepath_to_label(filepath)}}}\n" \
+  "    \\\\includegraphics[width=\${3:.9}\\textwidth]{#{filepath}}\n" \
+  "  \\\\caption{\${1:caption}}\n" \
+  "  \\\\label{fig:\${1/(\\w+)(\\W+$)?|\\W+/\${1:?\${1:/asciify/downcase}:_}/g}}\n" \
   '\\\\end{figure}'
 end
 
 # Include a dropped image in the current document.
 def include_image
   path = dropped_file_relative_path
-  includegraphics = "\\\\includegraphics[width=\${1:.9\\textwidth}]{#{path}}"
+  includegraphics = "\\\\includegraphics[width=\${2:}\\textwidth]{#{path}}\n \\\\caption{\${1:caption}}\n \\\\label{fig:\${1/(\\w+)(\\W+$)?|\\W+/\${1:?\${1:/asciify/downcase}:_}/g}}"
   case ENV['TM_MODIFIER_FLAGS']
   when /OPTION/
-    puts("\\\\begin{center}\n  #{includegraphics}\n\\\\end{center}")
+    puts("\\\\begin{figure}[H]\n \\\\centering\n \\\\begin{minipage}[t]{.47\\linewidth} \\\\centering\n #{includegraphics}\n \\\\end{minipage}\\quad\n \\\\begin{minipage}[t]{.5\\linewidth}\\\\centering\n \${3:}\n \\\\end{minipage}\n \\\\end{figure}")
   when /SHIFT/
     puts(includegraphics)
   else
