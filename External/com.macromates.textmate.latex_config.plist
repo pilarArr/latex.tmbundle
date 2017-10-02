@@ -12,16 +12,16 @@
 		cli = '\\lstinline{$1} ';
 		ds = '\\displaystyle';
 		dis = '\\displaystyle';
-		
+
 		hf = '\\hfill';
 		vf = '\\vfill';
-		
+
 		dc = '\\documentclass{${1:article}}\n';
 		nc = '\\newcommand{$1}{$2}';
 		rnc = '\\renewcommand{$1}{$2}';
 		usep = '\\usepackage{$1}';
 		geo = '\\usepackage[left=${1:2cm},right=${2:2cm},top=${3:1cm},bottom=${4:2cm}]{geometry}';
-		
+
 		sec = '\\section{$1}';
 		sub = '\\subsection{$1}';
 		ssub = '\\subsubsection{$1}';
@@ -30,7 +30,7 @@
 		par = '\\paragraph{$1}';
 		subp = '\\subparagraph{$1}';
 
-		
+
 		fr = '\\frac{${1:num}}{$2} $0';
 		frac = '\\frac{${1:num}}{$2} $0';
 		b = '\\binom{$1}{$2} $0';
@@ -41,6 +41,37 @@
 		sum = '\\sum_\{${1:bot}\}^{$2} $0';
 		p = "\\prod_\{${1:bot}\}^{$2} $0";
 		prod = "\\prod_\{${1:bot}\}^{$2} $0";
+
+		SI = '\\SI{${1:num}}{\\\\${2:unit}}$0';
+		SIr = '\\SIrange{${1:num}}{${2:num}}{\\\\${3:unit}}$0';
+		si = '\\si{$1}$0';
+		num ='\\num{$1}$0';
+		numr = '\\numrange{${1:num}}{${2:num}}$0';
+		temp= '\\SI{${1:num}}{\\celsius}$0';
+		mm= '\\SI{${1:num}}{\\mm}$0';
+		hz= '\\SI{${1:num}}{\\Hz}$0';
+		horas = '\\SI{${1:num}}{\\hour}$0';
+
+		di = '\\ding{221} $0';
+		al = '\\answerline[$1]$0';
+
+		// Math overlines and vectors
+		ol = '\\overline{$1}$0';
+		ora = '\\overrightarrow{$1}$0';
+
+		eur= '\\SI{${1:num}}{\\eur}$0';
+		usd= '\\SI{${1:num}}{\\usd}$0';
+		euro='\\SI{${1:num}}{\\euro}$0';
+		cent='\\SI{${1:num}}{\\cent}$0';
+
+		multir = '\\multirow{${1:numrows}}{${2:width}}{${3:content}} $0';
+		multic = '\\multicolumn{${1:numrows}}{${2:ali}}{${3:content}} $0';
+
+		tcred = "\\textcolor{Red}{$1}$0";
+		tcblue = "\\textcolor{Blue}{$1}$0";
+		tcgreen = "\\textcolor{Green}{$1}$0";
+
+		conv = "\\\\\\\\ Convocatorias: ($1)$0";
 
 		put = "\\put(${1:0},${2:0}){$0}";
 		mp = "\\multiput(${1:0},${2:0})(${3:5},${4:0}){${5:2}}{$0}";
@@ -105,25 +136,40 @@
 			triggers = ( p, par, parts );
 			content = "\t\\part $0";
 		};
-		
+		choices = {
+			triggers = ( 'ch', 'cho', 'choices');
+			content = "\t\\choice $0";
+		};
+		checkboxes = {
+			triggers = ( 'chb', 'checkboxes' );
+			content = "\t\\choice $0";
+		};
+		solution = {
+			triggers = ( 'sol', 'solu', 'solution');
+			content = "\t $0";
+		};
 		quote = {
 			triggers = ( q, qu, quote );
 		};
 		quotation = {
 			triggers = ( q, qu, quotation );
 		};
-		
-		table = {
+
+        table = {
 			triggers = ( tbl, table);
-			content = "\t\\begin{center}
-	\\begin{tabular}{${3:c}}
-		${4}
-	\\end{tabular}
-	\\end{center}
-	\\caption{${1:caption}}
-	\\label{${2:label}}";
+			content = "[H]\n\t\\centering
+			\t\\caption{${1:caption}}
+			\t\\label{tab:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}
+	\t\\begin{tabularx}{${3:.5}\\linewidth}{${4:X}}
+	\t\t	${5}
+	\t\\end{tabularx}";
 		};
-	};
+        
+		dinglist = {
+			triggers = ( dinglist, dingl );
+			content = "{${1}}\n\t\\item $0";
+		};
+
 	labeled_environments = {
 		theorem = {
 			triggers = ( thm, theorem );
@@ -156,14 +202,18 @@
 		};
 		figure = {
 			triggers = ( fig, figure);
-			content = "[${1:htbp}]\n\t\\centering
-\t\t\\includegraphics[${2:scale=${3:1}}]{${4:file}}
-\t\\caption{${5:caption}}
-\t\\label{fig:${6:label}}";
+			content = "[H]\n\t\\centering
+\t\t\\includegraphics[${3:0.9}\\textwidth]{${4:file}}
+\t\\caption{${1:caption}}
+\t\\label{fig:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}";
 		};
 		picture = {
 			triggers = ( pic, picture);
 			content = "(${1:100},${2:100})${3:(${4:0},${5:0})}\n\t$0";
+		};
+		minipage= {
+		triggers = ('mini', 'minipage');
+		content = "[c]{${1:.5}\\linewidth}\n\t\\setlength{\\parskip}{\\currentparskip}\n\t$0";
 		};
 
 	};
@@ -209,7 +259,7 @@
 			content = "{${1:areawidth}}{${2:areaheight}}\n\t\\only<${3:+}> $0";
 		};
 	};
-	
+
 	// Thanks to Piero D'Ancona for the symbols dictionary
 	symbols = {
 		"a" = "\\alpha";
@@ -220,11 +270,11 @@
 		"measuredangle" = "sphericalangle";
 		"sphericalangle" = "angle";
 		"ap" = "\\approx";
-		"ar" = "\\arcsin"; 
+		"ar" = "\\arcsin";
 		"arcsin" = "arccos";
 		"arccos" = "arctan";
 		"arctan" = "arcsin";
-		"ah" = "\\arcsinh"; 
+		"ah" = "\\arcsinh";
 		"arcsinh" = "arccosh";
 		"arccosh" = "arctanh";
 		"arctanh" = "arcsinh";
@@ -552,5 +602,17 @@
 		"hoo" = "\\hookleftarrow";
 		"hookleftarrow" = "hookrightarrow";
 		"hookrightarrow" = "hookleftarrow";
+		// This are my custom commands
+		"dp" = "\\droppoints";
+		"tf" = "\\truefalse";
+		"truefalse" = "true";
+		"true" = "false";
+		"false" = "truefalse";
+		"cs" = "\\cosa";
+		"cosa" = "bien";
+		"bien" = "cosa";
+		"cc" = "\\choice";
+		"choice" = "CorrectChoice";
+		"CorrectChoice" = "choice";
 	};
 }
