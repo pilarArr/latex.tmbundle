@@ -28,7 +28,7 @@ end
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>^&gt;</string>
+	<string>@}</string>
 	<key>name</key>
 	<string>Command Based on Current Word / Selection</string>
 	<key>outputCaret</key>

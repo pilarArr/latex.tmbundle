@@ -67,7 +67,7 @@ end
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>^&lt;</string>
+	<string>@{</string>
 	<key>name</key>
 	<string>Environment Based on Current Word / Selection</string>
 	<key>outputCaret</key>

@@ -16,7 +16,7 @@ toggle_style.rb -style=verb</string>
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>keyEquivalent</key>
-	<string>~@k</string>
+	<string>@￿</string>
 	<key>name</key>
 	<string>Verb</string>
 	<key>outputCaret</key>
