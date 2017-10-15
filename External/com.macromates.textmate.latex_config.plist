@@ -51,6 +51,10 @@
 		mm= '\\SI{${1:num}}{\\mm}$0';
 		hz= '\\SI{${1:num}}{\\Hz}$0';
 		horas = '\\SI{${1:num}}{\\hour}$0';
+		crefp = '(\\cref{$1}) $0';
+		
+		done = '\\item[\\done] $0';
+		nope = '\\item[\\wontfix] $0';
 
 		di = '\\ding{221} $0';
 		al = '\\answerline[$1]$0';
@@ -81,6 +85,7 @@
 		cir = "\\circle${1:[*]}{$0}";
 		circle = "\\circle${1:[*]}{$0}";
 	};
+	
 	commands_beamer = {
 		un = "\\uncover<${1:+-}>{$2} ";
 		uncover = "\\uncover<${1:+-}>{$2} ";
@@ -99,6 +104,7 @@
 		vis = "\\visible<${1:+-}>{$2} ";
 		visible = "\\visible<${1:+-}>{$2} ";
 	};
+	
 	environments = {
 		itemize = {
 			triggers = ( 'it', 'item', 'itemize');
