@@ -215,7 +215,7 @@ def include_code_listing
   if ENV['TM_MODIFIER_FLAGS'] =~ /SHIFT/
     file_type = extension_to_language(extension)
     print("\\\\lstinputlisting[language=\${1:#{file_type}}, tabsize=\${2:4}, " \
-         "caption=\${3:caption}, label=lst:\${4:#{label}}]{#{path}}")
+        "caption=\${3:caption}, label=lst:\${4:#{label}}]{#{path}}")
   else
     print(minted_environment(path, label, extension))
   end
@@ -241,21 +241,33 @@ end
 #
 # [filepath] The path to an image that should be included.
 def include_figure(filepath)
-  "\\\\begin{figure}[H]\n" \
-  "  \\\\centering\n" \
-  "    \\\\includegraphics[width=\${3:.9}\\textwidth]{#{filepath}}\n" \
-  "  \\\\caption{\${1:caption}}\n" \
-  "  \\\\label{fig:\${1/(\\w+)(\\W+$)?|\\W+/\${1:?\${1:/asciify/downcase}:_}/g}}\n" \
-  '\\\\end{figure}'
+    "\\begin{figure}[H]\n" \
+    "#{indent(1)}\\centering\n" \
+    "#{indent(1)}\\includegraphics[width=\${3:.9}\\textwidth]{#{filepath}}\n" \
+    "#{indent(1)}\\caption{\${1:caption}}\n" \
+    "#{indent(1)}\\label{fig:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}\n" \
+    '\\end{figure}'
 end
 
 # Include a dropped image in the current document.
 def include_image
   path = dropped_file_relative_path
-  includegraphics = "\\\\includegraphics[width=\${2:}\\textwidth]{#{path}}\n \\\\caption{\${1:caption}}\n \\\\label{fig:\${1/(\\w+)(\\W+$)?|\\W+/\${1:?\${1:/asciify/downcase}:_}/g}}"
+  label = filepath_to_label(path)
+  includegraphics = "#{indent(1)}\\includegraphics[width=\${2:}\\textwidth]{#{path}}\n" \
+  "#{indent(1)}\\caption{\${1:caption}}\n" \
+  "#{indent(1)}\\label{fig:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}"
   case ENV['TM_MODIFIER_FLAGS']
   when /OPTION/
-    puts("\\\\begin{figure}[H]\n \\\\centering\n \\\\begin{minipage}[t]{.47\\linewidth} \\\\centering\n #{includegraphics}\n \\\\end{minipage}\\quad\n \\\\begin{minipage}[t]{.5\\linewidth}\\\\centering\n \${3:}\n \\\\end{minipage}\n \\\\end{figure}")
+    puts(\
+        "\\begin{figure}[H]\n" \
+        "#{indent(1)}\\centering\n" \
+        "#{indent(1)}\\begin{minipage}[t]{.47\\linewidth}\n" \
+        "#{includegraphics}\n" \
+        "#{indent(1)}\\end{minipage}\\quad\n" \
+        "#{indent(1)}\\begin{minipage}[t]{.5\\linewidth}\n" \
+        "\${3:}\n" \
+        "#{indent(1)}\\end{minipage}\n" \
+        "\\end{figure}")
   when /SHIFT/
     puts(includegraphics)
   else

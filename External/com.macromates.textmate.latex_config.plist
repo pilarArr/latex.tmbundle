@@ -192,17 +192,13 @@
 			triggers = ( pf, proof );
 			content = "${1:\\label{pf:$2\\}}\n\t$0";
 		};
-
 		lstlisting = {
 			triggers = ( lst, lstlisting);
 			content = "[caption=${1:cap},label=lst:${2:lab},float=htbp]\n\t$0";
 		};
 		figure = {
 			triggers = ( fig, figure);
-			content = "[H]\n\t\\centering
-\t\t\\includegraphics[${3:0.9}\\textwidth]{${4:file}}
-\t\\caption{${1:caption}}
-\t\\label{fig:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}";
+			content = "[H]\n\t\\centering\n\t\\includegraphics[width=${3:0.9}\\textwidth]{${4:file}}\n\t\\caption{${1:caption}}\n\t\\label{fig:${2:${1/(\\w+)(\\W+$)?|\\W+/${1:?${1:/asciify/downcase}:_}/g}}}";
 		};
 		picture = {
 			triggers = ( pic, picture);
