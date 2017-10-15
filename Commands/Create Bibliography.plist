@@ -18,6 +18,8 @@ texmate.py bibtex</string>
 	<string>none</string>
 	<key>inputFormat</key>
 	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>~@b</string>
 	<key>name</key>
 	<string>Create Bibliography</string>
 	<key>outputCaret</key>
